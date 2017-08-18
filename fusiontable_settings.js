@@ -31,7 +31,7 @@ var MapsLib = MapsLib || {}; MapsLib.schemaVersion = 2;
 
     // The encrypted Table ID of your Fusion Table (found under File => About)
     MapsLib.fusionTableId = "1aHFbCktwwNwFxIfEsAsuwHQervSiF8KbEydWA5HV"; // test POS list
-    MapsLib.fusionTableId = "1qm1SrEqtFNiCW-QCUxH5dfoL0E-GZzmSQkfEtj3a"; // test POS list
+    //MapsLib.fusionTableId = "1qm1SrEqtFNiCW-QCUxH5dfoL0E-GZzmSQkfEtj3a"; // April POS
 
 
     // *New Fusion Tables Requirement* API key. found at https://code.google.com/apis/console/
