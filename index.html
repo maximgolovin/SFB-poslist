@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 
+<!--
     To customize this page for your own data, open fusiontable_settings.js and follow instructions.
     You should not have to touch this file.
 -->
@@ -41,7 +41,7 @@
         }
 
         /* using hr as spacer between search fields */
-        hr { 
+        hr {
             display: block; height: 8px;
             border: 0; margin: 0; padding: 0;
         }
@@ -61,7 +61,7 @@
         #black {
             background-color: #000;
         }
-        
+
         /* custom icons */
         .ui-icon-location {
             background-image: url(source/images/icons-18-white-location.png);
@@ -78,7 +78,7 @@
     <!-- About button -->
             <a id="about" data-role="button" href=
             "#page-about" data-icon="info" data-iconpos="left" class=
-            "ui-btn-left">About</a>
+            "ui-btn-left">Markers</a>
     <!-- Search button -->
     <a data-role="button" id="search_page"
             href="#page-search" data-icon=
@@ -90,8 +90,8 @@
         <div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="c"
          style="max-width:400px;" class="ui-corner-all">
             <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-                <p id="alertMessageText"></p> 
-                <a href="#page-map" id="alertMessageClose" data-role="button">OK</a>    
+                <p id="alertMessageText"></p>
+                <a href="#page-map" id="alertMessageClose" data-role="button">OK</a>
             </div>
         </div>
 
@@ -121,11 +121,26 @@
         <div data-theme="a" data-role="header">
             <a data-role="button" data-icon="arrow-l" data-iconpos=
             "left" href="#page-map" class="ui-btn-left" id="about_back">Back</a>
-
+            <a data-role="button" href="#page-map"
+            data-icon="arrow-r" data-iconpos="right" class=
+            "ui-btn-right" id="apply_style">Apply</a>
             <h3>About</h3>
         </div>
 
         <div data-role="content" id="section-about">
+
+          <form>
+                  <fieldset data-role="controlgroup">
+                  <legend>Set legend for marker' colors:</legend>
+                  <input type="radio" name="radio-choice-style" id="radio-choice-s1" value="ColorDefault" checked="checked">
+                  <label for="radio-choice-s1">Default color coding</label>
+                  <input type="radio" name="radio-choice-style" id="radio-choice-s2" value="ColorTradeLayer">
+                  <label for="radio-choice-s2">By Trade Layer</label>
+                  <input type="radio" name="radio-choice-style" id="radio-choice-s3" value="ColorHTS">
+                  <label for="radio-choice-s3">By HTS handling</label>
+              </fieldset>
+          </form>
+
         </div>
     </div>
 
@@ -190,10 +205,14 @@
             MapsLib.onEnterMap();
             MapsLib.doSearch();
         });
+        $("#apply_style").click(function(){
+            MapsLib.onEnterMap();
+            MapsLib.doSearch();
+        });
         $("#search_reset").click(function(){
             MapsLib.resetSearch();
         });
-        window.addEventListener('popstate', function(e) { 
+        window.addEventListener('popstate', function(e) {
             MapsLib.onPopState();
         });
     });
