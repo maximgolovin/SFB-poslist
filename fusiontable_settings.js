@@ -36,8 +36,9 @@ var MapsLib = MapsLib || {}; MapsLib.schemaVersion = 2;
 
     // *New Fusion Tables Requirement* API key. found at https://code.google.com/apis/console/
     // *Important* this key is for demonstration purposes. please register your own.
-     MapsLib.googleApiKey ="AIzaSyAMVBSXes-6P-gWaxRj20GK8NT6WDVpozM";
-    //MapsLib.googleApiKey ="AIzaSyADGKFQuqtZYVsUJJCm4OMEBW93YJxl9ig";
+    // MapsLib.googleApiKey ="AIzaSyAMVBSXes-6P-gWaxRj20GK8NT6WDVpozM";  // derek eder
+    MapsLib.googleApiKey ="AIzaSyDIevSvpV-ONb4Pf15VUtwyr_zZa7ccwq4"; // jd
+    //MapsLib.googleApiKey ="AIzaSyADGKFQuqtZYVsUJJCm4OMEBW93YJxl9ig"; // my
 
 
 
