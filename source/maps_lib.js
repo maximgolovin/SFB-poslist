@@ -51,8 +51,8 @@ $.extend(MapsLib, {
     // markers
     addrMarker:         null,
     localMarker:        null,
-    addrMarkerImage:    '//maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png',
-    blueDotImage:       '//maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png',
+    addrMarkerImage:    'http://labs.google.com/ridefinder/images/mm_20_yellow.png', // 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png',
+    blueDotImage:       'http://labs.google.com/ridefinder/images/mm_20_red.png', //  'https://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png',
     currentPinpoint:    null,
     defaultPixelOffset: new google.maps.Size(0,-30),
 
@@ -541,7 +541,7 @@ $.extend(MapsLib, {
         });
 
         // request list of columns
-        var qstr = "https://www.googleapis.com/fusiontables/v1/tables/" + MapsLib.fusionTableId + "?maxResults=100&callback=MapsLib.setColumns&key=" + MapsLib.googleApiKey;
+        var qstr = "https://www.googleapis.com/fusiontables/v2/tables/" + MapsLib.fusionTableId + "?maxResults=100&callback=MapsLib.setColumns&key=" + MapsLib.googleApiKey;
         console.log("Query: " + qstr);
         $.ajax({
             url: qstr,
@@ -579,7 +579,6 @@ $.extend(MapsLib, {
         $("#map_canvas").css("visibility", "hidden");
         MapsLib.map = new google.maps.Map($("#map_canvas")[0], myOptions);
 
-        console.log("new fusion layer");
         MapsLib.searchrecords = new google.maps.FusionTablesLayer({
             query: {},
             styleId: MapsLib.styleId,
@@ -809,7 +808,7 @@ $.extend(MapsLib, {
             {
                 options["bounds"] = MapsLib.defaultMapBounds.bounds;
             }
-            MapsLib.autocomplete = new google.maps.places.Autocomplete($("#search_address")[0], options);
+            //MapsLib.autocomplete = new google.maps.places.Autocomplete($("#search_address")[0], options);
         }
     },
     initSearchFieldCallbacks: function() {
@@ -1490,22 +1489,52 @@ $.extend(MapsLib, {
 //          templateId: MapsLib.templateId,
 //        });
 
-        var columnName = $("input[name=radio-choice-style]:checked").val()
         MapsLib.searchrecords.setOptions({
           query: {
             from: MapsLib.fusionTableId,
             select: MapsLib.locationColumn,
             where: whereClause
-          },
-          markerOptions: {
-      		  iconStyler: {
-        		  kind: "fusiontables#fromColumn",
-        		  columnName: columnName
-            },
-          },
-          //styleId: MapsLib.styleId,
-          //templateId: MapsLib.templateId,
+          }
         });
+
+        var columnName = $("input[name=radio-choice-style]:checked").val();
+        console.log("columnName: "+columnName)
+        switch (columnName) {
+            case "ColorTradeLayer":
+              console.log("style: Trade Layer");
+              MapsLib.searchrecords.setOptions({
+                styles: [ {
+                  where: "TradeLayer = 'GT'",
+                  markerOptions: { iconName: 'measle_white',}
+                }, {
+                  where: "TradeLayer = 'KA'",
+                  markerOptions: { iconName: 'measle_grey',}
+                }]
+              });
+              break;
+            case "ColorHTS":
+              console.log("style: HTS handling");
+              MapsLib.searchrecords.setOptions({
+                styles: [ {
+                  where: "HTSHandling = '0'",
+                  markerOptions: { iconName: 'small_red',}
+                }, {
+                  where: "HTSHandling = '1'",
+                  markerOptions: { iconName: 'small_green',}
+                }]
+              });
+              break;
+            case "ColorDefault":
+            default:
+            console.log("style: DEFAULT");
+              MapsLib.searchrecords.setOptions({
+                styles: [{
+                  where: "",
+                  markerOptions: { iconName: 'small_red',}
+                }]
+            });
+        }
+
         google.maps.event.clearListeners(MapsLib.searchrecords, 'click');
         google.maps.event.addListener(MapsLib.searchrecords, 'click', function(e) {
 
@@ -1568,7 +1597,7 @@ $.extend(MapsLib, {
         }
 
         var sql = encodeURIComponent(queryStr.join(" "));
-        var qstr = "https://www.googleapis.com/fusiontables/v1/query?sql=" + sql + "&callback=" + callback + "&key=" + MapsLib.googleApiKey;
+        var qstr = "https://www.googleapis.com/fusiontables/v2/query?sql=" + sql + "&callback=" + callback + "&key=" + MapsLib.googleApiKey;
         console.log("Query: " + qstr);
         $.ajax({
             url: qstr,
@@ -1775,7 +1804,7 @@ $.extend(MapsLib, {
             subset = columnRangeQueries.slice(i, i + chunk);
             wheresubset = whereClauses.slice(i, i + chunk);
             var sql = encodeURIComponent("SELECT " + subset.join(", ") + " FROM " + MapsLib.fusionTableId + " WHERE " + wheresubset.join(" AND "));
-            var qstr = "https://www.googleapis.com/fusiontables/v1/query?sql=" + sql + "&callback=MapsLib.sliderMinMaxResult&key=" + MapsLib.googleApiKey;
+            var qstr = "https://www.googleapis.com/fusiontables/v2/query?sql=" + sql + "&callback=MapsLib.sliderMinMaxResult&key=" + MapsLib.googleApiKey;
             console.log("Query: " + qstr);
             $.ajax({
                 url: qstr,
