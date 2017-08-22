@@ -1500,31 +1500,31 @@ $.extend(MapsLib, {
         var columnName = $("input[name=radio-choice-style]:checked").val();
         console.log("columnName: "+columnName)
         switch (columnName) {
-            case "ColorTradeLayer":
-              console.log("style: Trade Layer");
+            case "InRP":
+              console.log("style: InRP");
               MapsLib.searchrecords.setOptions({
                 styles: [ {
-                  where: "TradeLayer = 'GT'",
-                  markerOptions: { iconName: 'measle_white',}
-                }, {
-                  where: "TradeLayer = 'KA'",
+                  where: "InRP = 'no'",
                   markerOptions: { iconName: 'measle_grey',}
+                }, {
+                  where: "InRP = 'yes'",
+                  markerOptions: { iconName: 'small_red',}
                 }]
               });
               break;
-            case "ColorHTS":
+            case "HTShandling":
               console.log("style: HTS handling");
               MapsLib.searchrecords.setOptions({
                 styles: [ {
                   where: "HTSHandling = '0'",
-                  markerOptions: { iconName: 'small_red',}
+                  markerOptions: { iconName: 'small_yellow',}
                 }, {
                   where: "HTSHandling = '1'",
-                  markerOptions: { iconName: 'small_green',}
+                  markerOptions: { iconName: 'small_red',}
                 }]
               });
               break;
-            case "ColorDefault":
+            case "Default":
             default:
             console.log("style: DEFAULT");
               MapsLib.searchrecords.setOptions({
