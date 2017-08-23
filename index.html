@@ -130,7 +130,7 @@
         <div data-role="content" id="section-about">
 
           <form>
-                  <fieldset data-role="controlgroup">
+              <fieldset data-role="controlgroup">
                   <legend>Set legend for marker' colors:</legend>
                   <input type="radio" name="radio-choice-style" id="radio-choice-s1" value="Default" checked="checked">
                   <label for="radio-choice-s1">Default marker color [RED]</label>
@@ -155,11 +155,16 @@
         </div>
 
         <div data-role="content">
-            <ul data-role="listview" id="listview" data-divider-theme=""
-            data-inset="false">
+          <div class="scroller" style="height:100%;overflow:scroll">
+
+            <ul data-role="listview" id="listview" data-divider-theme="" data-inset="false">
                 <li data-theme="c">Loading results...</li>
             </ul>
+
         </div>
+
+      </div>
+
     </div>
 
     <!-- Search dialog -->
