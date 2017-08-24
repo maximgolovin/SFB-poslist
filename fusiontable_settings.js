@@ -122,6 +122,30 @@ $.extend(MapsLib, {
     //  If "allColumns" is true, "text" and "slider" columns will simply override label/match settings for the specified columns
     //  Text fields for numerical columns use exact match only.  (If you want range categories, create a drop-down)
 
+*/
+
+    searchPage: {
+        allColumns: false,
+        addressShow: false,
+        columns: [
+            { label: "InRP", type: "dropdown", entries: [
+                ["Any", "", true],
+                ["Yes", "'InRP' = 'yes'"],
+                ["No", "'InRP' = 'no'"],
+            ] },
+            { label: "CustAddress", type: "text", column: "CustAddress" },
+            { label: "CustCode", type: "text", column: "CustCode" },
+            { label: "CustName", type: "text", column: "CustName" },
+            { label: "CustRegisteredName", type: "text", column: "CustRegisteredName" },
+            { label: "TE", type: "text", column: "TE" },
+            { label: "DSPV", type: "text", column: "TE" },
+            { label: "FM", type: "text", column: "TE" },
+            { label: "IND Volume", type: "slider", column: "INDmc", min: 0, max: 100},
+            { label: "PMI Volume", type: "slider", column: "PMImc", min: 0, max: 100},
+        ]
+    },
+
+/*
     searchPage: {
         allColumns: false,
         distanceFilter: {
@@ -200,6 +224,31 @@ $.extend(MapsLib, {
     //        - false when populating a map infobox
     //        - true when populating a row in the "List" view
 
+*/
+
+    customInfoboxHtml: " \
+        {{#if isListView}} \
+            <div style='font-size:smaller';> \
+        {{else}} \
+            <div class='infobox-map'> \
+        {{/if}} \
+        <strong>{{row.CustCode}}</strong> {{row.CustName}} ({{row.CustStatus}})\
+        {{#if isListView}} \
+            <br>{{row.CustRegisteredName}} \
+            <br>{{row.CustAddress}} \
+            <br>{{row.TE}} \
+        {{else}} \
+            <br>{{row.CustRegisteredName}} \
+            <br>{{row.CustAddress}} \
+            <br>{{row.FM}} \
+            <br>{{row.DSPV}} \
+            <br>{{row.TE}} \
+            <br>Segment: {{row.VolumeSegment}}, Ind: {{row.INDmc}}, PMI: {{row.PMImc}}, InRP: {{row.InRP}} \
+            <br><a href='#{{row.CustCode}}'>Open POS dashboard</a> \
+        {{/if}} \
+        </div>",
+
+/*
     // delimitedColumns (optional): specify delimiter per column, and row.COLUMN_NAME will return an array
     delimitedColumns: {"violations": ";"},
 
