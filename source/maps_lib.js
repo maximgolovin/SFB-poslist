@@ -46,13 +46,13 @@ $.extend(MapsLib, {
     mapOverlayLayers:   [],
     mapOverlayOrder:    [],
     map_centroid:       new google.maps.LatLng(37.77, -122.45), // center on SF if all else fails
-    defaultZoom:        9,
+    defaultZoom:        11,
 
     // markers
     addrMarker:         null,
     localMarker:        null,
-    addrMarkerImage:    'http://labs.google.com/ridefinder/images/mm_20_yellow.png', // 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png',
-    blueDotImage:       'http://labs.google.com/ridefinder/images/mm_20_red.png', //  'https://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png',
+    addrMarkerImage:    'source/images/mm_20_yellow.png', // 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red-dot.png',
+    blueDotImage:       'source/images/mm_20_red.png', //  'https://maps.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png',
     currentPinpoint:    null,
     defaultPixelOffset: new google.maps.Size(0,-30),
 
