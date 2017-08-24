@@ -46,7 +46,7 @@ $.extend(MapsLib, {
     mapOverlayLayers:   [],
     mapOverlayOrder:    [],
     map_centroid:       new google.maps.LatLng(37.77, -122.45), // center on SF if all else fails
-    defaultZoom:        5,
+    defaultZoom:        9,
 
     // markers
     addrMarker:         null,
@@ -1395,6 +1395,7 @@ $.extend(MapsLib, {
         {
             var safekey = MapsLib.safeField(key);
             var safevalue = $(document.createElement('div')).html(row[key].value).text().replace(MapsLib.unicodeSet, ""); // using jQuery to decode "&amp;"->"&" and so on
+
             if (MapsLib.delimitedColumns != undefined && key in MapsLib.delimitedColumns)
             {
                 // split value by delimiter
@@ -1450,7 +1451,9 @@ $.extend(MapsLib, {
                         return true;
                     if (col == "longitude")
                         return true; // HACK: latitude implies there's also a longitude column
-                    infoboxContent += "<b>" + col + ":</b> " + val + "<br/>";
+                    if (columns.indexOf(col)==-1)
+                        return true;
+                    infoboxContent += val + "<br/>";
                     if (++ix >= limit)
                         return false;
                 });
@@ -1498,10 +1501,9 @@ $.extend(MapsLib, {
         });
 
         var columnName = $("input[name=radio-choice-style]:checked").val();
-        console.log("columnName: "+columnName)
+
         switch (columnName) {
             case "InRP":
-              console.log("style: InRP");
               MapsLib.searchrecords.setOptions({
                 styles: [ {
                   where: "InRP = 'no'",
@@ -1513,7 +1515,6 @@ $.extend(MapsLib, {
               });
               break;
             case "HTShandling":
-              console.log("style: HTS handling");
               MapsLib.searchrecords.setOptions({
                 styles: [ {
                   where: "HTSHandling = '0'",
@@ -1526,7 +1527,6 @@ $.extend(MapsLib, {
               break;
             case "Default":
             default:
-            console.log("style: DEFAULT");
               MapsLib.searchrecords.setOptions({
                 styles: [{
                   where: "",
