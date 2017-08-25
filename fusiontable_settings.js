@@ -137,9 +137,9 @@ $.extend(MapsLib, {
             { label: "CustCode", type: "text", column: "CustCode" },
             { label: "CustName", type: "text", column: "CustName" },
             { label: "CustRegisteredName", type: "text", column: "CustRegisteredName" },
+            { label: "FM", type: "text", column: "FM" },
+            { label: "DSPV", type: "text", column: "DSPV" },
             { label: "TE", type: "text", column: "TE" },
-            { label: "DSPV", type: "text", column: "TE" },
-            { label: "FM", type: "text", column: "TE" },
             { label: "IND Volume", type: "slider", column: "INDmc", min: 0, max: 100},
             { label: "PMI Volume", type: "slider", column: "PMImc", min: 0, max: 100},
         ]
