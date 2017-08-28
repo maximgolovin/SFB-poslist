@@ -1123,6 +1123,7 @@ $.extend(MapsLib, {
                     var field_id = MapsLib.safeField(cdata.label);
                     html.push("<hr><label for='sc_" + field_id + "'>" + cdata.label + ":</label>");
                     html.push("<select data-ref='custom' id='sc_" + field_id + "' name=''>");
+                    //html.push("<select data-ref='custom' id='sc_" + field_id + "' name='' multiple='multiple' data-native-menu='false'>");
                     var template = cdata.template;
                     var foreach = cdata.foreach;
                     var entries = cdata.entries;
@@ -1479,6 +1480,22 @@ $.extend(MapsLib, {
         });
         MapsLib.searchrecords.setMap(MapsLib.map);
     },
+    updateNumRows: function(json) {
+      MapsLib.in_query = false;
+      if (MapsLib.handleError(json)) {
+          return false;
+      }
+      // add distinct rows to search dropdown
+      var numRows = (json != undefined && json.rows != undefined) ? json.rows.length : 0;
+      console.log(""+numRows+" point(s)");
+      var column = json.columns[0];
+      var rowcount = 0;
+      for (var ix = 0; ix < numRows; ix++) {
+          rowcount = json.rows[ix][1];
+          break;
+      }
+      $("#numrows").text(""+rowcount+" point(s)");
+    },
     submitSearch: function(whereClause, map, location) {
         //get using all filters
         MapsLib.searchrecords.setOptions({
@@ -1488,6 +1505,9 @@ $.extend(MapsLib, {
             where: whereClause
           }
         });
+
+        MapsLib.in_query = true;
+        MapsLib.query("CustCode, Count()", whereClause, "", "", "MapsLib.updateNumRows");
 
         var columnName = $("input[name=radio-choice-style]:checked").val();
 
