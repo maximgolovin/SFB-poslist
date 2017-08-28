@@ -46,7 +46,7 @@ $.extend(MapsLib, {
     mapOverlayLayers:   [],
     mapOverlayOrder:    [],
     map_centroid:       new google.maps.LatLng(37.77, -122.45), // center on SF if all else fails
-    defaultZoom:        11,
+    defaultZoom:        10,
 
     // markers
     addrMarker:         null,
@@ -808,6 +808,7 @@ $.extend(MapsLib, {
             {
                 options["bounds"] = MapsLib.defaultMapBounds.bounds;
             }
+            /* need to investigate*/
             //MapsLib.autocomplete = new google.maps.places.Autocomplete($("#search_address")[0], options);
         }
     },
@@ -1151,7 +1152,7 @@ $.extend(MapsLib, {
                     if (MapsLib.stringExists(foreach))
                     {
                         var foreachSafe = "'" + foreach + "'";
-                        MapsLib.in_query = "sc_" + field_id;
+                        MapsLib.in_query = true;
                         MapsLib.query(foreachSafe + ", Count()", "", "", foreachSafe, "MapsLib.updateSearchForeach");
                     }
                     html.push("</select>");
@@ -1480,18 +1481,6 @@ $.extend(MapsLib, {
     },
     submitSearch: function(whereClause, map, location) {
         //get using all filters
-        console.log("SQL Query: " + whereClause);
-
-//        MapsLib.searchrecords.setOptions({
-//          query: {
-//            from: MapsLib.fusionTableId,
-//            select: MapsLib.locationColumn,
-//            where: whereClause
-//          },
-//          styleId: MapsLib.styleId,
-//          templateId: MapsLib.templateId,
-//        });
-
         MapsLib.searchrecords.setOptions({
           query: {
             from: MapsLib.fusionTableId,
@@ -1861,7 +1850,6 @@ $.extend(MapsLib, {
         MapsLib.query("*", whereClause, orderClause, "", "MapsLib.displayListView");
     },
     updateSearchForeach: function(json) {
-        var selectObject = $("#" + MapsLib.in_query);
         MapsLib.in_query = false;
         if (MapsLib.handleError(json)) {
             return false;
@@ -1869,9 +1857,12 @@ $.extend(MapsLib, {
         // add distinct rows to search dropdown
         var numRows = (json != undefined && json.rows != undefined) ? json.rows.length : 0;
         var column = json.columns[0];
+        var selectObject = $("#sc_"+column);
+        if (selectObject.children().length>1) return false;
         for (var ix = 0; ix < numRows; ix++) {
             var rowname = json.rows[ix][0];
             var whereclause = "'" + column + "' = '" + rowname + "'";
+            console.log('name: sc_'+column+', length: '+selectObject.children().length);
             var row = $("<option></option>").attr("value", whereclause).text(rowname);
             selectObject.append(row);
         }
