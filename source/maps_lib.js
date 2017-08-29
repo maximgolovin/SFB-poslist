@@ -45,7 +45,7 @@ $.extend(MapsLib, {
     templateId:         (MapsLib.templateId == 0) ? 0 : (MapsLib.templateId || 3),
     mapOverlayLayers:   [],
     mapOverlayOrder:    [],
-    map_centroid:       new google.maps.LatLng(37.77, -122.45), // center on SF if all else fails
+    map_centroid:       new google.maps.LatLng(55.75, 37.62), // center on Moscow
     defaultZoom:        10,
 
     // markers
@@ -78,7 +78,7 @@ $.extend(MapsLib, {
     customSearchFilter: "",
     listViewRows:       [],
     listViewSortByColumn: MapsLib.listViewSortByColumn || "",
-    datesInitialized:  false,
+    datesInitialized:   false,
     selectedListRow:    null,
     //unicode characters to not print to screen
     //From https://github.com/slevithan/XRegExp/blob/master/src/addons/unicode/unicode-categories.js#L28
@@ -1487,7 +1487,6 @@ $.extend(MapsLib, {
       }
       // add distinct rows to search dropdown
       var numRows = (json != undefined && json.rows != undefined) ? json.rows.length : 0;
-      console.log(""+numRows+" point(s)");
       var column = json.columns[0];
       var rowcount = 0;
       for (var ix = 0; ix < numRows; ix++) {
@@ -1534,13 +1533,13 @@ $.extend(MapsLib, {
           case "Volume":
             MapsLib.searchrecords.setOptions({
               styles: [ {
-                where: "'INDmc'<8",
-                markerOptions: { iconName: "small_red"}
+                where: "'INDmc'<7",
+                markerOptions: { iconName: "measle_grey"}
               }, {
-                where: "'INDmc'>=8 AND 'INDmc'<11",
+                where: "'INDmc'>=7 AND 'INDmc'<8",
                 markerOptions: { iconName: "small_yellow"}
               }, {
-                where: "'INDmc'>=11",
+                where: "'INDmc'>=8",
                 markerOptions: { iconName: "small_green"}
               }]
             });
@@ -1548,13 +1547,13 @@ $.extend(MapsLib, {
           case "Share":
             MapsLib.searchrecords.setOptions({
               styles: [ {
-                where: "'Share'<29",
+                where: "'Share'<19",
                 markerOptions: { iconName: "small_red"}
               }, {
-                where: "'Share'>=29 AND 'Share'<39",
+                where: "'Share'>=19 AND 'Share'<22",
                 markerOptions: { iconName: "small_yellow"}
               }, {
-                where: "'Share'>=39",
+                where: "'Share'>=22",
                 markerOptions: { iconName: "small_green"}
               }]
             });
@@ -1573,7 +1572,7 @@ $.extend(MapsLib, {
           case "Investments":
             MapsLib.searchrecords.setOptions({
               styles: [ {
-                where: "'INV'=''",
+                where: "'INV'='no inv'",
                 markerOptions: { iconName: "measle_grey"}
               }, {
                 where: "'INV'='Contract'",
@@ -1598,7 +1597,7 @@ $.extend(MapsLib, {
           case "Default":
           default:
             MapsLib.searchrecords.setOptions({
-              styles: [{ where: "", markerOptions: { iconName: "small_red"} }]
+              styles: [{ where: "", markerOptions: { iconName: "measle_grey"} }]
           });
         }
 
@@ -1622,8 +1621,8 @@ $.extend(MapsLib, {
         MapsLib.setLayerVisibility(); // refresh layers
         MapsLib.overrideCenter = true;
 
-        MapsLib.in_query = true;
-        MapsLib.query("CustCode, Count()", whereClause, "", "", "MapsLib.updateNumRows");
+        if (!MapsLib.in_query) MapsLib.in_query = true;
+        MapsLib.query("'CustCode', Count()", whereClause, "", "", "MapsLib.updateNumRows");
 
     },
     clearSearch: function() {
@@ -1944,7 +1943,6 @@ $.extend(MapsLib, {
         for (var ix = 0; ix < numRows; ix++) {
             var rowname = json.rows[ix][0];
             var whereclause = "'" + column + "' = '" + rowname + "'";
-            console.log('name: sc_'+column+', length: '+selectObject.children().length);
             var row = $("<option></option>").attr("value", whereclause).text(rowname);
             selectObject.append(row);
         }
@@ -1982,7 +1980,6 @@ $.extend(MapsLib, {
             $("a#listrow-" + ix).click(function(e) {
                 var index = e.currentTarget.id.split("-")[1] * 1;
                 MapsLib.selectedListRow = MapsLib.listViewRows[index];
-
 
                 if (MapsLib.selectedListRow != undefined)
                 {

@@ -30,7 +30,9 @@ var MapsLib = MapsLib || {}; MapsLib.schemaVersion = 2;
     // See https://developers.google.com/fusiontables/docs/v1/migration_guide for more info
 
     // The encrypted Table ID of your Fusion Table (found under File => About)
-    MapsLib.fusionTableId = "1aHFbCktwwNwFxIfEsAsuwHQervSiF8KbEydWA5HV"; // test POS list
+    // MapsLib.fusionTableId = "1aHFbCktwwNwFxIfEsAsuwHQervSiF8KbEydWA5HV"; // poslist JUL
+    MapsLib.fusionTableId = "1ogP9oP2LV-dQHhCRaXO-mTBSX0IJzuAouDI7I9W7"; // poslist AUG
+
     //MapsLib.fusionTableId = "1qm1SrEqtFNiCW-QCUxH5dfoL0E-GZzmSQkfEtj3a"; // April POS
 
 
@@ -128,54 +130,26 @@ $.extend(MapsLib, {
         allColumns: false,
         addressShow: false,
         columns: [
-            { label: "CustStatus", type: "dropdown", entries: [["All statuses","",true]], foreach: "CustStatus" },
-            { label: "InRP", type: "dropdown", entries: [["All InRP","",true]], foreach: "InRP" },
-            { label: "CustAddress", type: "text", column: "CustAddress" },
-            { label: "CustCity", type: "dropdown", foreach: "CustCity" },
             { label: "CustCode", type: "text", column: "CustCode" },
             { label: "CustName", type: "text", column: "CustName" },
             { label: "CustRegisteredName", type: "text", column: "CustRegisteredName" },
-            { label: "FM", type: "dropdown", entries: [["All FM","",true]], foreach: "FM" },
-            { label: "DSPV", type: "dropdown", entries: [["All DSPV","",true]], foreach: "DSPV" },
-            { label: "TE", type: "dropdown", entries: [["All TE","",true]], foreach: "TE" },
-            { label: "IND mc", type: "slider", column: "INDmc", min: 0, max: 500},
-            { label: "PMI mc", type: "slider", column: "PMImc", min: 0, max: 100},
-            { label: "Share %", type: "slider", column: "Share", min: 0, max: 100},
-            { label: "PPOSM", type: "dropdown", foreach: "PPOSM" },
-            { label: "INV", type: "dropdown", foreach: "INV" },
-            { label: "TradeLayer", type: "dropdown", foreach: "TradeLayer" },
-            { label: "TradeCategory", type: "dropdown", column: "TradeCategory" },
-            { label: "HTS", type: "dropdown", foreach: "HTS" },
+            { label: "CustAddress", type: "text", column: "CustAddress" },
+            { label: "CustStatus", type: "dropdown", entries: [["all points","",true]], foreach: "CustStatus" },
+            { label: "TradeLayer", type: "dropdown", entries: [["all points","",true]], foreach: "TradeLayer" },
+            { label: "TradeCategory", type: "dropdown", entries: [["all points","",true]], foreach: "TradeCategory" },
+            { label: "SUPPLIER", type: "dropdown", entries: [["all points","",true]], foreach: "SUPPLIER" },
+            { label: "FM", type: "dropdown", entries: [["all points","",true]], foreach: "FM" },
+            { label: "DSPV", type: "dropdown", entries: [["all points","",true]], foreach: "DSPV" },
+            { label: "TE", type: "dropdown", entries: [["all points","",true]], foreach: "TE" },
+            { label: "InRP", type: "dropdown", entries: [["all points","",true]], foreach: "InRP" },
+            { label: "IND mc", type: "slider", column: "INDmc"},
+            { label: "PMI mc", type: "slider", column: "PMImc"},
+            { label: "Share %", type: "slider", column: "Share"},
+            { label: "PPOSM", type: "dropdown", entries: [["all points","",true]], foreach: "PPOSM" },
+            { label: "INV", type: "dropdown", entries: [["all points","",true]], foreach: "INV" },
+            { label: "HTS", type: "dropdown", entries: [["all points","",true]], foreach: "HTS" },
         ]
     },
-
-/*
-    searchPage: {
-        allColumns: false,
-        distanceFilter: {
-            entries: [
-            ["Anywhere", "0", true],
-            ["2 blocks", "400 meters"],
-            ["1/2 mile", ".5 miles"],
-            ["1 mile"],
-            ["2 miles"] ]
-        },
-        columns: [
-            { label: "Rating Filter", type: "dropdown", entries: [
-                ["Any Rating", "'last_score' > 0", true],
-                ["Good", "'last_score' > 90"],
-                ["Adequate", "'last_score' > 85 AND 'last_score' <= 90"],
-                ["Needs Improvement", "'last_score' > 70 AND 'last_score' <= 85"],
-                ["Poor", "'last_score' <= 70 AND 'last_score' > 0"]
-            ] },
-            { label: "Name", type: "text", column: "name"},
-            { label: "Violations", type: "text", column: "violations"},
-            { label: "Score", type: "slider", column: "last_score", min: 0, max: 100},
-            { label: "Last Inspected", type: "datepicker", column: "last_inspection_date"},
-        ],
-    },
-*/
-
 
     ///////////////////////
     // 3. CUSTOM CONTENT //
@@ -232,28 +206,51 @@ $.extend(MapsLib, {
 
     customInfoboxHtml: " \
         {{#if isListView}} \
-            <div style='font-size:smaller';> \
+          <div style='font-size:smaller';> \
         {{else}} \
-            <div class='infobox-map'> \
+          <div class='infobox-map'> \
         {{/if}} \
-        <strong>{{row.CustCode}}</strong> {{row.CustName}} ({{row.CustStatus}})\
-        {{#if isListView}} \
-            <br>{{row.CustRegisteredName}} \
-            <br>{{row.CustAddress}} \
-            <br>{{row.TE}} \
-        {{else}} \
-            <br>{{row.CustRegisteredName}} \
-            <br>{{row.CustAddress}} \
-            <br>InRP: {{row.InRP}} \
-            <br>{{row.FM}} \
-            <br>{{row.DSPV}} \
-            <br>{{row.TE}} \
-            <br>{{row.TradeLayer}}, {{row.TradeCategory}} \
-            <br>IND: {{row.INDmc}}, PMI: {{row.PMImc}}, Share: {{row.Share}}% \
-            <br>INV: {{row.INV}}, PPOSM: {{row.PPOSM}} \
-            <br><a href='#{{row.CustCode}}'>Open POS dashboard</a> \
-        {{/if}} \
+          <strong>{{row.CustCode}}</strong>, Status: {{row.CustStatus}}, InRP: {{row.InRP}}\
+          <br>{{row.CustName}}, {{row.CustRegisteredName}} \
+          <br>{{row.CustAddress}} \
+          <br>{{row.TradeLayer}}, {{row.TradeCategory}} \
+          <br>{{row.FM}} \
+          <br>{{row.DSPV}} \
+          <br>{{row.TE}} \
+          <br>Volume (mc) IND: {{row.INDmc}}, PMI: {{row.PMImc}} ({{row.Share}}%) \
+          <br>INV: {{row.INV}}, PPOSM: {{row.PPOSM}} \
+          <br>Supplier: {{row.SUPPLIER}}\
+          <br>HTS Handling {{row.HTS}} \
         </div>",
+
+/*
+customInfoboxHtml: " \
+    {{#if isListView}} \
+        <div style='font-size:smaller';> \
+    {{else}} \
+        <div class='infobox-map'> \
+    {{/if}} \
+    <strong>{{row.CustCode}}</strong> {{row.CustName}} ({{row.CustStatus}})\
+    {{#if isListView}} \
+        <br>{{row.CustRegisteredName}} \
+        <br>{{row.CustAddress}} \
+        <br>{{row.TE}} \
+    {{else}} \
+        <br>{{row.CustRegisteredName}} \
+        <br>{{row.CustAddress}} \
+        <br>InRP: {{row.InRP}} \
+        <br>{{row.FM}} \
+        <br>{{row.DSPV}} \
+        <br>{{row.TE}} \
+        <br>{{row.TradeLayer}}, {{row.TradeCategory}} \
+        <br>IND: {{row.INDmc}}, PMI: {{row.PMImc}}, Share: {{row.Share}}% \
+        <br>INV: {{row.INV}}, PPOSM: {{row.PPOSM}} \
+        <br><a href='#{{row.CustCode}}'>Open POS dashboard</a> \
+    {{/if}} \
+    </div>",
+
+*/
+
 
 /*
     // delimitedColumns (optional): specify delimiter per column, and row.COLUMN_NAME will return an array
@@ -263,38 +260,11 @@ $.extend(MapsLib, {
     //                                  append "DESC" to sort in reverse
     listViewSortByColumn: "name",
 
-    customInfoboxHtml: " \
-        {{#if isListView}} \
-            <div> \
-        {{else}} \
-            <div class='infobox-map'> \
-        {{/if}} \
-        <div class='score {{row.last_score_category}}'><span id='score-text'>{{row.last_score}}</span></div> \
-        <h4 class='infobox-header'>{{row.name}}</h4> \
-        <p class='ui-li-desc infobox-subheader'> \
-        {{#if isListView}} \
-            {{row.address}}</p> \
-        {{else}} \
-            <strong>Last inspected: {{row.last_inspection_date}}</strong> \
-            <br>{{row.address}}</p> \
-            <p class='ui-li-desc infobox-subheader'> \
-            {{#if row.violations}} \
-                <b>Recent violations ({{row.violations.length}}):</b> \
-                {{#each row.violations}} \
-                    <br>- {{this}} \
-                {{/each}} \
-            {{else}} \
-                <b>Recent violations:</b> None \
-            {{/if}} \
-        {{/if}} \
-        </p></div>",
-
     // Infoboxes will also appear (unless blank) on your nearby or search address pins.
     // HTML is OK.  Use "{address}" to denote the entered address for addressPinInfobox.
     nearbyPinInfobox: "You are here.",
     addressPinInfobox: "{address}",
 */
-
 
     ////////////////////////
     // 4. MAP PREFERENCES //
@@ -302,9 +272,10 @@ $.extend(MapsLib, {
 
 /*
     // Override the location column in your Fusion Table (useful if you have multiple columns)
-    // NOTE: if you have "latitude" and "longitude" columns, just use "latitude"
-    //locationColumn:  "latitude",
+    // NOTE: if you have "latitude" and "longitude" columns, just use "latitude" */
+    // locationColumn:  "CustAddress",
 
+/*
     // Center and zoom radius that your map defaults to when location services are off.
     // If useDefaultMapBounds is true (see section 2), this also determines which addresses get priority with autocomplete
     defaultMapBounds: {
