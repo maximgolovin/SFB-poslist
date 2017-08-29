@@ -129,16 +129,23 @@ $.extend(MapsLib, {
         addressShow: false,
         columns: [
             { label: "CustStatus", type: "dropdown", entries: [["All statuses","",true]], foreach: "CustStatus" },
+            { label: "InRP", type: "dropdown", entries: [["All InRP","",true]], foreach: "InRP" },
             { label: "CustAddress", type: "text", column: "CustAddress" },
+            { label: "CustCity", type: "dropdown", foreach: "CustCity" },
             { label: "CustCode", type: "text", column: "CustCode" },
             { label: "CustName", type: "text", column: "CustName" },
             { label: "CustRegisteredName", type: "text", column: "CustRegisteredName" },
-            { label: "InRP", type: "dropdown", entries: [["All InRP","",true]], foreach: "InRP" },
             { label: "FM", type: "dropdown", entries: [["All FM","",true]], foreach: "FM" },
             { label: "DSPV", type: "dropdown", entries: [["All DSPV","",true]], foreach: "DSPV" },
             { label: "TE", type: "dropdown", entries: [["All TE","",true]], foreach: "TE" },
-            { label: "IND Volume", type: "slider", column: "INDmc", min: 0, max: 100},
-            { label: "PMI Volume", type: "slider", column: "PMImc", min: 0, max: 100},
+            { label: "IND mc", type: "slider", column: "INDmc", min: 0, max: 500},
+            { label: "PMI mc", type: "slider", column: "PMImc", min: 0, max: 100},
+            { label: "Share %", type: "slider", column: "Share", min: 0, max: 100},
+            { label: "PPOSM", type: "dropdown", foreach: "PPOSM" },
+            { label: "INV", type: "dropdown", foreach: "INV" },
+            { label: "TradeLayer", type: "dropdown", foreach: "TradeLayer" },
+            { label: "TradeCategory", type: "dropdown", column: "TradeCategory" },
+            { label: "HTS", type: "dropdown", foreach: "HTS" },
         ]
     },
 
@@ -237,10 +244,13 @@ $.extend(MapsLib, {
         {{else}} \
             <br>{{row.CustRegisteredName}} \
             <br>{{row.CustAddress}} \
+            <br>InRP: {{row.InRP}} \
             <br>{{row.FM}} \
             <br>{{row.DSPV}} \
             <br>{{row.TE}} \
-            <br>Segment: {{row.VolumeSegment}}, Ind: {{row.INDmc}}, PMI: {{row.PMImc}}, InRP: {{row.InRP}} \
+            <br>{{row.TradeLayer}}, {{row.TradeCategory}} \
+            <br>IND: {{row.INDmc}}, PMI: {{row.PMImc}}, Share: {{row.Share}}% \
+            <br>INV: {{row.INV}}, PPOSM: {{row.PPOSM}} \
             <br><a href='#{{row.CustCode}}'>Open POS dashboard</a> \
         {{/if}} \
         </div>",

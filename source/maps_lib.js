@@ -1497,6 +1497,7 @@ $.extend(MapsLib, {
       $("#numrows").text(""+rowcount+" point(s)");
     },
     submitSearch: function(whereClause, map, location) {
+
         //get using all filters
         MapsLib.searchrecords.setOptions({
           query: {
@@ -1506,42 +1507,99 @@ $.extend(MapsLib, {
           }
         });
 
-        MapsLib.in_query = true;
-        MapsLib.query("CustCode, Count()", whereClause, "", "", "MapsLib.updateNumRows");
-
         var columnName = $("input[name=radio-choice-style]:checked").val();
-
         switch (columnName) {
-            case "InRP":
-              MapsLib.searchrecords.setOptions({
-                styles: [ {
-                  where: "InRP = 'no'",
-                  markerOptions: { iconName: 'measle_grey',}
-                }, {
-                  where: "InRP = 'yes'",
-                  markerOptions: { iconName: 'small_red',}
-                }]
-              });
-              break;
-            case "HTShandling":
-              MapsLib.searchrecords.setOptions({
-                styles: [ {
-                  where: "HTSHandling = '0'",
-                  markerOptions: { iconName: 'small_yellow',}
-                }, {
-                  where: "HTSHandling = '1'",
-                  markerOptions: { iconName: 'small_red',}
-                }]
-              });
-              break;
-            case "Default":
-            default:
-              MapsLib.searchrecords.setOptions({
-                styles: [{
-                  where: "",
-                  markerOptions: { iconName: 'small_red',}
-                }]
+          case "TradeLayer":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'TradeLayer'='GT'",
+                markerOptions: { iconName: "smal_red"}
+              }, {
+                where: "'TradeLayer'='KA'",
+                markerOptions: { iconName: "measle_grey"}
+              }]
             });
+            break;
+          case "InRP":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'InRP'='Yes'",
+                markerOptions: { iconName: "small_red"}
+              }, {
+                where: "'InRP'='No'",
+                markerOptions: { iconName: "measle_grey"}
+              }]
+            });
+            break;
+          case "Volume":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'INDmc'<8",
+                markerOptions: { iconName: "small_red"}
+              }, {
+                where: "'INDmc'>=8 AND 'INDmc'<11",
+                markerOptions: { iconName: "small_yellow"}
+              }, {
+                where: "'INDmc'>=11",
+                markerOptions: { iconName: "small_green"}
+              }]
+            });
+            break;
+          case "Share":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'Share'<29",
+                markerOptions: { iconName: "small_red"}
+              }, {
+                where: "'Share'>=29 AND 'Share'<39",
+                markerOptions: { iconName: "small_yellow"}
+              }, {
+                where: "'Share'>=39",
+                markerOptions: { iconName: "small_green"}
+              }]
+            });
+            break;
+          case "PPOSM":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'PPOSM'='no'",
+                markerOptions: { iconName: "measle_grey"}
+              }, {
+                where: "'PPOSM'='BW'",
+                markerOptions: { iconName: "small_green"}
+              }]
+            });
+            break;
+          case "Investments":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'INV'=''",
+                markerOptions: { iconName: "measle_grey"}
+              }, {
+                where: "'INV'='Contract'",
+                markerOptions: { iconName: "small_green"}
+              }, {
+                where: "'INV'='RTP'",
+                markerOptions: { iconName: "small_yellow"}
+              }]
+            });
+            break;
+          case "HTS":
+            MapsLib.searchrecords.setOptions({
+              styles: [ {
+                where: "'HTS'=0",
+                markerOptions: { iconName: "small_yellow"}
+              },{
+                where: "'HTS'=1",
+                markerOptions: { iconName: "small_green"}
+              }]
+            });
+            break;
+          case "Default":
+          default:
+            MapsLib.searchrecords.setOptions({
+              styles: [{ where: "", markerOptions: { iconName: "small_red"} }]
+          });
         }
 
         google.maps.event.clearListeners(MapsLib.searchrecords, 'click');
@@ -1563,6 +1621,10 @@ $.extend(MapsLib, {
 
         MapsLib.setLayerVisibility(); // refresh layers
         MapsLib.overrideCenter = true;
+
+        MapsLib.in_query = true;
+        MapsLib.query("CustCode, Count()", whereClause, "", "", "MapsLib.updateNumRows");
+
     },
     clearSearch: function() {
         if (MapsLib.addrMarker != null)
