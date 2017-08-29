@@ -1122,8 +1122,8 @@ $.extend(MapsLib, {
                 {
                     var field_id = MapsLib.safeField(cdata.label);
                     html.push("<hr><label for='sc_" + field_id + "'>" + cdata.label + ":</label>");
+                    //html.push("<select data-ref='custom' id='sc_" + field_id + "' name=''>");
                     html.push("<select data-ref='custom' id='sc_" + field_id + "' name=''>");
-                    //html.push("<select data-ref='custom' id='sc_" + field_id + "' name='' multiple='multiple' data-native-menu='false'>");
                     var template = cdata.template;
                     var foreach = cdata.foreach;
                     var entries = cdata.entries;
