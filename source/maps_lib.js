@@ -1533,14 +1533,17 @@ $.extend(MapsLib, {
           case "Volume":
             MapsLib.searchrecords.setOptions({
               styles: [ {
-                where: "'INDmc'<7",
+                where: "'INDmc'<6.8",
                 markerOptions: { iconName: "measle_grey"}
               }, {
-                where: "'INDmc'>=7 AND 'INDmc'<8",
+                where: "'INDmc'>=6.8 AND 'INDmc'<7.4",
                 markerOptions: { iconName: "small_yellow"}
               }, {
-                where: "'INDmc'>=8",
+                where: "'INDmc'>=7.4 AND 'INDmc'<30",
                 markerOptions: { iconName: "small_green"}
+              }, {
+                where: "'INDmc'>=30",
+                markerOptions: { iconName: "measle_white"}
               }]
             });
             break;
@@ -1575,8 +1578,11 @@ $.extend(MapsLib, {
                 where: "'INV'='no inv'",
                 markerOptions: { iconName: "measle_grey"}
               }, {
-                where: "'INV'='Contract'",
+                where: "'INV'='Contr'",
                 markerOptions: { iconName: "small_green"}
+              }, {
+                where: "'INV'='DTA'",
+                markerOptions: { iconName: "small_yellow"}
               }, {
                 where: "'INV'='RTP'",
                 markerOptions: { iconName: "small_yellow"}
@@ -1586,9 +1592,12 @@ $.extend(MapsLib, {
           case "HTS":
             MapsLib.searchrecords.setOptions({
               styles: [ {
-                where: "'HTS'=0",
+                where: "'INDmc'<6.8",
+                markerOptions: { iconName: "measle_grey"}
+              }, {
+                where: "'INDmc'>=6.8 AND 'HTS'=0",
                 markerOptions: { iconName: "small_yellow"}
-              },{
+              }, {
                 where: "'HTS'=1",
                 markerOptions: { iconName: "small_green"}
               }]
